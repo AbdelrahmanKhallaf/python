@@ -1,0 +1,2571 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Python Foundation | مراجعة شاملة</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --primary-light: #3b82f6;
+            --secondary: #10b981;
+            --secondary-dark: #059669;
+            --accent: #f59e0b;
+            --accent-dark: #d97706;
+            --danger: #ef4444;
+            --purple: #8b5cf6;
+            --bg: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-alt: #f1f5f9;
+            --text: #0f172a;
+            --text-light: #475569;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.04);
+            --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.15);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-lg: 24px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-main: 'Cairo', 'Tajawal', sans-serif;
+            --font-code: 'Fira Code', 'Courier New', monospace;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --bg-alt: #334155;
+            --text: #f1f5f9;
+            --text-light: #cbd5e1;
+            --text-muted: #64748b;
+            --border: #334155;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-main);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 17px;
+            transition: var(--transition);
+            overflow-x: hidden;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.1s ease;
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+
+        .author-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+            max-width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .author-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.12);
+            border-color: var(--primary);
+        }
+        .author-icon {
+            width: 55px; height: 55px;
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            border-radius: 15px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 24px;
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
+            flex-shrink: 0;
+        }
+        .author-info { display: flex; flex-direction: column; gap: 2px; }
+        .author-label {
+            font-size: 13px; font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+        .author-name { font-size: 20px; font-weight: 800; color: var(--text); letter-spacing: 0.5px; }
+        [data-theme="dark"] .author-card { background: #1e293b; border-color: #334155; }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            border-radius: var(--radius-lg);
+            padding: 60px 50px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 50px;
+            box-shadow: var(--shadow-xl);
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -20%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%; left: -10%;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 70%);
+            border-radius: 50%;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(10deg); }
+        }
+        .hero-content { position: relative; z-index: 2; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 8px 18px; border-radius: 50px;
+            font-size: 14px; font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .hero h1 {
+            font-size: 44px; font-weight: 900;
+            margin-bottom: 16px; line-height: 1.3;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .hero p { font-size: 20px; opacity: 0.95; max-width: 700px; margin-bottom: 30px; font-weight: 400; }
+        .hero-stats { display: flex; gap: 30px; flex-wrap: wrap; }
+        .stat-item {
+            display: flex; align-items: center; gap: 12px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px; border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .stat-item i { font-size: 22px; }
+        .stat-item span { font-weight: 600; font-size: 15px; }
+
+        .toc {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 30px 35px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            border-top: 5px solid var(--primary);
+        }
+        .toc h3 {
+            font-size: 22px; color: var(--primary);
+            margin-bottom: 20px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .toc-list {
+            list-style: none; padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 10px;
+        }
+        .toc-list li {
+            padding: 10px 16px;
+            background: var(--bg-alt);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+        .toc-list li a {
+            color: var(--text); text-decoration: none;
+            font-weight: 600; font-size: 15px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .toc-list li:hover { background: linear-gradient(90deg, #dbeafe, var(--bg-alt)); transform: translateX(-5px); }
+        [data-theme="dark"] .toc-list li:hover { background: linear-gradient(90deg, #1e3a8a, var(--bg-alt)); }
+        .toc-list li a i { color: var(--primary); font-size: 14px; }
+
+        .section {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 40px 45px;
+            margin-bottom: 35px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            scroll-margin-top: 20px;
+        }
+        .section:hover { box-shadow: var(--shadow-md); }
+        .section-header {
+            display: flex; align-items: center; gap: 16px;
+            margin-bottom: 25px; padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+        .section-number {
+            width: 52px; height: 52px;
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 22px; font-weight: 800;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-md);
+        }
+        .section-title { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1.3; }
+        .section-subtitle { font-size: 15px; color: var(--text-muted); font-weight: 500; margin-top: 4px; }
+
+        .subsection {
+            margin: 30px 0;
+            padding: 25px 28px;
+            background: var(--bg-alt);
+            border-radius: var(--radius-sm);
+            border-right: 5px solid var(--primary);
+        }
+        .subsection h3 {
+            font-size: 22px; color: var(--primary);
+            margin-bottom: 15px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .subsection h4 {
+            font-size: 18px; color: var(--text);
+            margin: 20px 0 10px;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .definition {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-radius: var(--radius-sm);
+            padding: 22px 28px;
+            margin: 20px 0;
+            border-right: 5px solid var(--primary);
+        }
+        [data-theme="dark"] .definition { background: linear-gradient(135deg, #1e3a8a, #1e40af); color: #dbeafe; }
+        .definition strong { color: var(--primary-dark); font-weight: 800; }
+        [data-theme="dark"] .definition strong { color: #93c5fd; }
+
+        .table-wrapper {
+            overflow-x: auto; margin: 25px 0;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 16px; background: var(--bg-card); }
+        thead { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; }
+        thead th { padding: 16px 20px; text-align: right; font-weight: 700; font-size: 16px; white-space: nowrap; }
+        tbody tr { transition: var(--transition); border-bottom: 1px solid var(--border); }
+        tbody tr:nth-child(even) { background: var(--bg-alt); }
+        tbody tr:hover { background: linear-gradient(90deg, rgba(37, 99, 235, 0.05), transparent); }
+        tbody td { padding: 14px 20px; color: var(--text-light); vertical-align: middle; }
+        tbody td strong { color: var(--text); }
+
+        .list-modern { list-style: none; padding: 0; margin: 20px 0; }
+        .list-modern li {
+            padding: 12px 20px 12px 0;
+            padding-right: 40px;
+            position: relative;
+            margin-bottom: 10px;
+            background: var(--bg-alt);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            font-size: 16px;
+        }
+        .list-modern li::before {
+            content: '✦';
+            position: absolute;
+            right: 15px; top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-weight: bold; font-size: 18px;
+        }
+        .list-modern li:hover { background: linear-gradient(90deg, #dbeafe, transparent); padding-right: 50px; }
+        [data-theme="dark"] .list-modern li:hover { background: linear-gradient(90deg, #1e3a8a, transparent); }
+
+        .info-box {
+            padding: 22px 28px;
+            border-radius: var(--radius-sm);
+            margin: 20px 0;
+            border-right: 5px solid;
+            font-size: 16px;
+            line-height: 1.9;
+        }
+        .info-box.note { background: #fef3c7; border-color: var(--accent); color: #78350f; }
+        [data-theme="dark"] .info-box.note { background: #78350f; color: #fef3c7; }
+        .info-box.warning { background: #fee2e2; border-color: var(--danger); color: #7f1d1d; }
+        [data-theme="dark"] .info-box.warning { background: #7f1d1d; color: #fee2e2; }
+        .info-box.success { background: #d1fae5; border-color: var(--secondary); color: #064e3b; }
+        [data-theme="dark"] .info-box.success { background: #064e3b; color: #d1fae5; }
+        .info-box.info { background: #dbeafe; border-color: var(--primary); color: #1e3a8a; }
+        [data-theme="dark"] .info-box.info { background: #1e3a8a; color: #dbeafe; }
+        .info-box .box-title { font-weight: 800; font-size: 17px; display: block; margin-bottom: 8px; }
+
+        .example {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-radius: var(--radius-sm);
+            padding: 22px 28px;
+            margin: 20px 0;
+            border-right: 5px solid var(--secondary);
+        }
+        [data-theme="dark"] .example { background: linear-gradient(135deg, #064e3b, #065f46); color: #d1fae5; }
+        .example .label {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--secondary); color: white;
+            padding: 4px 14px; border-radius: 50px;
+            font-size: 14px; font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .example p { margin-bottom: 8px; color: var(--text-light); }
+        [data-theme="dark"] .example p { color: #d1fae5; }
+
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 22px 28px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-code);
+            font-size: 15px;
+            margin: 20px 0;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+            border-right: 5px solid var(--secondary);
+            box-shadow: var(--shadow-md);
+            position: relative;
+        }
+        .code-block::before {
+            content: '● ● ●';
+            position: absolute;
+            top: 10px; right: 15px;
+            color: #64748b;
+            font-size: 12px;
+            letter-spacing: 4px;
+        }
+        .code-block code { display: block; padding-top: 15px; white-space: pre; }
+
+        .output-block {
+            background: #0f172a;
+            color: #10b981;
+            padding: 18px 24px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-code);
+            font-size: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+            border-right: 5px solid var(--accent);
+        }
+        .output-block::before {
+            content: 'OUTPUT ▶';
+            display: block;
+            color: #f59e0b;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 13px;
+            letter-spacing: 2px;
+        }
+
+        .trace-block {
+            background: #f5f3ff;
+            border-radius: var(--radius-sm);
+            padding: 20px 25px;
+            margin: 15px 0;
+            border-right: 5px solid var(--purple);
+        }
+        [data-theme="dark"] .trace-block { background: #2e1065; color: #ede9fe; }
+
+        .questions-section {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 40px 45px;
+            margin-top: 50px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+        .questions-header { text-align: center; margin-bottom: 40px; }
+        .questions-header h2 {
+            font-size: 32px; font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        .questions-header p { color: var(--text-muted); font-size: 16px; }
+
+        .questions-part { margin-bottom: 50px; }
+        .part-title {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            color: white;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-size: 20px; font-weight: 800;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-md);
+        }
+        .part-title.advanced { background: linear-gradient(135deg, var(--accent), var(--danger)); }
+        .part-title.code { background: linear-gradient(135deg, var(--secondary), var(--secondary-dark)); }
+
+        .question {
+            background: var(--bg-alt);
+            border-radius: var(--radius-sm);
+            padding: 22px 28px;
+            margin-bottom: 18px;
+            border-right: 5px solid var(--primary);
+            transition: var(--transition);
+        }
+        .question:hover { box-shadow: var(--shadow-md); transform: translateX(-3px); }
+        .question.essay { border-right-color: var(--accent); }
+        .question.code-q { border-right-color: var(--secondary); }
+        .question-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+        .q-num {
+            background: var(--primary); color: white;
+            min-width: 38px; height: 38px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 15px;
+            flex-shrink: 0;
+        }
+        .question.essay .q-num { background: var(--accent); }
+        .question.code-q .q-num { background: var(--secondary); }
+        .q-text { font-size: 17px; font-weight: 600; color: var(--text); line-height: 1.7; padding-top: 5px; }
+        .options { list-style: none; padding: 0; margin-top: 15px; }
+        .options li {
+            padding: 12px 18px;
+            margin-bottom: 8px;
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            border: 2px solid transparent;
+            font-size: 16px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .options li::before {
+            content: '';
+            width: 22px; height: 22px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .answer {
+            margin-top: 15px;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-radius: var(--radius-sm);
+            border-right: 4px solid var(--secondary);
+            font-weight: 600;
+            color: #064e3b;
+        }
+        [data-theme="dark"] .answer { background: linear-gradient(135deg, #064e3b, #065f46); color: #d1fae5; }
+        .answer::before {
+            content: '✅ الإجابة: ';
+            font-weight: 800;
+            color: var(--secondary-dark);
+        }
+
+        .cheat-sheet {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #e2e8f0;
+            border-radius: var(--radius);
+            padding: 35px 40px;
+            margin: 30px 0;
+            box-shadow: var(--shadow-xl);
+        }
+        .cheat-sheet h3 {
+            color: #f59e0b;
+            font-size: 26px;
+            margin-bottom: 25px;
+            display: flex; align-items: center; gap: 12px;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 15px;
+        }
+        .cheat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+        .cheat-item {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 20px;
+            border-radius: var(--radius-sm);
+            border-right: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+        .cheat-item:hover { background: rgba(255,255,255,0.1); transform: translateX(-4px); }
+        .cheat-item strong { color: #3b82f6; display: block; margin-bottom: 5px; font-size: 15px; }
+        .cheat-item span { font-size: 14px; color: #cbd5e1; }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 15px;
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+        }
+        .footer-heart { color: var(--danger); animation: heartbeat 1.5s infinite; display: inline-block; }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .floating-actions {
+            position: fixed;
+            bottom: 30px; left: 30px;
+            display: flex; flex-direction: column; gap: 12px;
+            z-index: 999;
+        }
+        .float-btn {
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: white;
+            transition: var(--transition);
+            box-shadow: var(--shadow-lg);
+        }
+        .float-btn:hover { transform: translateY(-4px) scale(1.05); box-shadow: 0 15px 35px rgba(0,0,0,0.25); }
+        .float-btn.theme-btn { background: linear-gradient(135deg, var(--primary), var(--purple)); }
+        .float-btn.print-btn { background: linear-gradient(135deg, var(--secondary), var(--secondary-dark)); }
+        .float-btn.scroll-btn { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); opacity: 0; visibility: hidden; }
+        .float-btn.scroll-btn.visible { opacity: 1; visibility: visible; }
+
+        @media print {
+            body { background: white; font-size: 14px; }
+            .floating-actions, .progress-bar { display: none !important; }
+            .container { padding: 0; max-width: 100%; }
+            .section { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; margin-bottom: 20px; }
+            .question { page-break-inside: avoid; }
+            .code-block { background: #f1f5f9; color: #0f172a; }
+        }
+
+        @media (max-width: 768px) {
+            body { font-size: 15px; }
+            .container { padding: 20px 15px 60px; }
+            .hero { padding: 40px 25px; }
+            .hero h1 { font-size: 26px; }
+            .hero p { font-size: 16px; }
+            .hero-stats { gap: 12px; }
+            .stat-item { padding: 8px 14px; font-size: 13px; }
+            .section { padding: 25px 20px; }
+            .section-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .section-title { font-size: 22px; }
+            .section-number { width: 44px; height: 44px; font-size: 18px; }
+            .subsection { padding: 18px 18px; }
+            .subsection h3 { font-size: 18px; }
+            table { font-size: 14px; }
+            thead th, tbody td { padding: 10px 12px; }
+            .questions-section { padding: 25px 20px; }
+            .questions-header h2 { font-size: 24px; }
+            .question { padding: 18px 20px; }
+            .q-text { font-size: 15px; }
+            .options li { font-size: 14px; padding: 10px 14px; }
+            .toc-list { grid-template-columns: 1fr; }
+            .floating-actions { bottom: 20px; left: 15px; }
+            .float-btn { width: 46px; height: 46px; font-size: 18px; }
+            .cheat-sheet { padding: 25px 20px; }
+            .cheat-sheet h3 { font-size: 20px; }
+            .cheat-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="container">
+
+    <!-- كارت المُعِد -->
+    <div class="author-card">
+        <div class="author-icon"><i class="fas fa-user-tie"></i></div>
+        <div class="author-info">
+            <span class="author-label">إعداد</span>
+            <span class="author-name">ENG : عبدالرحمن خلاف</span>
+        </div>
+    </div>
+
+    <!-- الغلاف الرئيسي -->
+    <header class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-graduation-cap"></i>
+                <span>الصف الثاني الثانوي - Python Foundation</span>
+            </div>
+            <h1>🐍 مراجعة امتحانية شاملة — 7 محاضرات</h1>
+            <p>شرح تفصيلي بالفهم والتطبيق + 20 سؤال تدريب لكل محاضرة. من الصفر إلى الاحتراف.</p>
+            <div class="hero-stats">
+                <div class="stat-item"><i class="fas fa-book-open"></i><span>7 محاضرات</span></div>
+                <div class="stat-item"><i class="fas fa-question-circle"></i><span>140 سؤال</span></div>
+                <div class="stat-item"><i class="fas fa-clock"></i><span>مراجعة شاملة</span></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- فهرس المحتويات -->
+    <div class="toc">
+        <h3><i class="fas fa-list-ul"></i> فهرس المحاضرات</h3>
+        <ul class="toc-list">
+            <li><a href="#lec1"><i class="fas fa-play"></i> المحاضرة 1: مقدمة إلى البرمجة</a></li>
+            <li><a href="#lec2"><i class="fas fa-calculator"></i> المحاضرة 2: المعاملات (Operators)</a></li>
+            <li><a href="#lec3"><i class="fas fa-code-branch"></i> المحاضرة 3: اتخاذ القرار (Decision Making)</a></li>
+            <li><a href="#lec4"><i class="fas fa-sync"></i> المحاضرة 4: الحلقات التكرارية (Loops)</a></li>
+            <li><a href="#lec5"><i class="fas fa-font"></i> المحاضرة 5: النصوص (Strings)</a></li>
+            <li><a href="#lec6"><i class="fas fa-list"></i> المحاضرة 6: القوائم (Lists)</a></li>
+            <li><a href="#lec7"><i class="fas fa-cube"></i> المحاضرة 7: الدوال (Functions)</a></li>
+        </ul>
+    </div>
+
+    <!-- ============================================
+         المحاضرة الأولى
+         ============================================ -->
+    <section class="section" id="lec1">
+        <div class="section-header">
+            <div class="section-number">1</div>
+            <div>
+                <h2 class="section-title">مقدمة إلى البرمجة</h2>
+                <p class="section-subtitle">Introduction to Programming</p>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-bullseye"></i> أهداف المحاضرة</h3>
+            <ul class="list-modern">
+                <li><strong>فهم معنى البرمجة والخوارزمية والبرنامج</strong></li>
+                <li><strong>تنصيب Python و VS Code</strong></li>
+                <li><strong>استخدام <code>print()</code> و <code>input()</code></strong></li>
+                <li><strong>إنشاء المتغيرات وفهم قواعد التسمية</strong></li>
+                <li><strong>التمييز بين أنواع البيانات: int, float, str, bool</strong></li>
+                <li><strong>كتابة برنامج بسيط يتفاعل مع المستخدم</strong></li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-brain"></i> 1. يعني إيه Programming؟</h3>
+            <p>الكمبيوتر سريع جدًا، لكنه <strong>مش بيفكر من نفسه</strong>. لازم تقوله: اعمل إيه؟ وإمتى؟ وبأي ترتيب؟</p>
+            <div class="definition">
+                <strong>البرمجة (Programming):</strong> فن كتابة تعليمات مرتبة بلغة يفهمها الحاسوب، لينفذها ويحل بها مشكلة معينة.
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-route"></i> 2. يعني إيه Algorithm و Program؟</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>المصطلح</th><th>المعنى</th><th>مثال</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Problem</strong></td><td>المشكلة</td><td>عايز أعرف الطالب ناجح ولا راسب</td></tr>
+                        <tr><td><strong>Algorithm</strong></td><td>خطوات حل المشكلة</td><td>اقرأ الدرجة → لو ≥ 50 → ناجح</td></tr>
+                        <tr><td><strong>Program</strong></td><td>تحويل الخوارزمية لكود</td><td>كتابة الكود بلغة Python</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="info-box note">
+                <span class="box-title">⭐ تركة امتحان</span>
+                لو السؤال قال "مجموعة خطوات مرتبة لحل مشكلة" → الإجابة: <strong>Algorithm</strong>.
+                لو قال "تعليمات مكتوبة بلغة برمجة" → الإجابة: <strong>Program</strong>.
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-project-diagram"></i> 3. Flowchart — المخطط الانسيابي</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>الشكل</th><th>الاستخدام</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Oval / بيضاوي</strong></td><td>البداية والنهاية</td></tr>
+                        <tr><td><strong>Rectangle / مستطيل</strong></td><td>عملية</td></tr>
+                        <tr><td><strong>Diamond / معين</strong></td><td>قرار</td></tr>
+                        <tr><td><strong>Parallelogram / متوازي أضلاع</strong></td><td>إدخال وإخراج</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-terminal"></i> 4. أول برنامج: Hello World</h3>
+            <p><strong>الفكرة العامة:</strong> عشان نطبع أي حاجة، بنستخدم <code>print()</code>. النص لازم يكون بين علامتي تنصيص <code>""</code>.</p>
+            <div class="code-block">
+<code># ده أول برنامج ليا بلغة بايثون
+print("Hello, World!")
+print("مرحباً بك في عالم البرمجة")</code>
+            </div>
+            <div class="output-block">Hello, World!
+مرحباً بك في عالم البرمجة</div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-comment"></i> 5. التعليقات (Comments)</h3>
+            <ul class="list-modern">
+                <li><strong>تعليق سطر واحد:</strong> <code># هذا تعليق</code></li>
+                <li><strong>تعليق متعدد الأسطر:</strong> <code>""" ... """</code></li>
+                <li><strong>ملاحظة:</strong> الكمبيوتر <strong>مش بينفذ</strong> التعليقات.</li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-box"></i> 6. المتغيرات (Variables)</h3>
+            <div class="definition">
+                <strong>المتغير:</strong> مكان باسم لتخزين قيمة. علامة <code>=</code> معناها إسناد (Assignment) مش مقارنة.
+            </div>
+            <h4>قواعد التسمية:</h4>
+            <ul class="list-modern">
+                <li><strong>لا يبدأ برقم</strong> — ❌ <code>1age</code> / ✅ <code>age1</code></li>
+                <li><strong>لا توجد مسافات</strong> — ❌ <code>student name</code> / ✅ <code>student_name</code></li>
+                <li><strong>_ مسموح</strong> — ✅ <code>student_name</code></li>
+                <li><strong>Python حساسة لحالة الأحرف</strong> — <code>age</code> ≠ <code>Age</code></li>
+                <li><strong>snake_case:</strong> أفضل أسلوب للتسمية</li>
+            </ul>
+            <div class="code-block">
+<code>score = 50
+print(score)   # 50
+score = 80
+print(score)   # 80</code>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-database"></i> 7. أنواع البيانات (Data Types)</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>النوع</th><th>المعنى</th><th>مثال</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>int</code></td><td>عدد صحيح</td><td>16, -3, 1000</td></tr>
+                        <tr><td><code>float</code></td><td>عدد عشري</td><td>1.65, 3.14</td></tr>
+                        <tr><td><code>str</code></td><td>نص</td><td>"Ali"</td></tr>
+                        <tr><td><code>bool</code></td><td>منطقي</td><td>True / False</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="code-block">
+<code>a = 10
+b = 3.14
+c = "Python"
+d = True
+
+print(type(a))   # &lt;class 'int'&gt;
+print(type(b))   # &lt;class 'float'&gt;
+print(type(c))   # &lt;class 'str'&gt;
+print(type(d))   # &lt;class 'bool'&gt;</code>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-keyboard"></i> 8. input() — الإدخال</h3>
+            <div class="info-box warning">
+                <span class="box-title">🚨 أهم تركة</span>
+                <code>input()</code> دائمًا ترجع <strong>String (نص)</strong>، حتى لو المستخدم كتب رقم!
+            </div>
+            <div class="code-block">
+<code>name = input("ما اسمك؟ ")
+print("مرحبا يا", name)</code>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-bug"></i> 9. الأخطاء الشائعة</h3>
+            <div class="info-box warning">
+                <span class="box-title">⚠️ تجنب الأخطاء دي</span>
+                • <code>Print("Hello")</code> ❌ (لازم <code>print</code> بحروف صغيرة)<br>
+                • <code>print(Hello)</code> ❌ (لازم <code>"Hello"</code> بين علامات تنصيص)<br>
+                • <code>print "Hello"</code> ❌ (لازم الأقواس في Python 3)<br>
+                • <code>1age = 16</code> ❌ (اسم المتغير لا يبدأ برقم)
+            </div>
+        </div>
+
+        <!-- Cheat Sheet للمحاضرة الأولى -->
+        <div class="cheat-sheet">
+            <h3><i class="fas fa-star"></i> Cheat Sheet — المحاضرة الأولى</h3>
+            <div class="cheat-grid">
+                <div class="cheat-item"><strong>print()</strong><span>إخراج البيانات</span></div>
+                <div class="cheat-item"><strong>input()</strong><span>إدخال البيانات (ترجع str)</span></div>
+                <div class="cheat-item"><strong>#</strong><span>تعليق سطر واحد</span></div>
+                <div class="cheat-item"><strong>type()</strong><span>معرفة نوع البيانات</span></div>
+                <div class="cheat-item"><strong>int</strong><span>عدد صحيح</span></div>
+                <div class="cheat-item"><strong>float</strong><span>عدد عشري</span></div>
+                <div class="cheat-item"><strong>str</strong><span>نص</span></div>
+                <div class="cheat-item"><strong>bool</strong><span>True / False</span></div>
+                <div class="cheat-item"><strong>=</strong><span>Assignment (إسناد)</span></div>
+                <div class="cheat-item"><strong>==</strong><span>Comparison (مقارنة)</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- أسئلة المحاضرة الأولى -->
+    <div class="questions-section">
+        <div class="questions-header">
+            <h2><i class="fas fa-question-circle"></i> 20 سؤال على المحاضرة الأولى</h2>
+            <p>اختبر فهمك للدرس</p>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title"><i class="fas fa-layer-group"></i> الجزء الأول: اختيار من متعدد</div>
+
+            <div class="question">
+                <div class="question-header"><div class="q-num">1</div><div class="q-text">ما المقصود بالـ Algorithm؟</div></div>
+                <ul class="options">
+                    <li>أ) لغة برمجة</li>
+                    <li>ب) مجموعة خطوات مرتبة لحل مشكلة</li>
+                    <li>ج) جهاز كمبيوتر</li>
+                    <li>د) نوع بيانات</li>
+                </ul>
+                <div class="answer">ب</div>
+            </div>
+
+            <div class="question">
+                <div class="question-header"><div class="q-num">2</div><div class="q-text">أي مما يلي يستخدم لإخراج البيانات؟</div></div>
+                <ul class="options">
+                    <li>أ) input()</li><li>ب) type()</li><li>ج) print()</li><li>د) str()</li>
+                </ul>
+                <div class="answer">ج</div>
+            </div>
+
+            <div class="question">
+                <div class="question-header"><div class="q-num">3</div><div class="q-text">أي مما يلي يستخدم للحصول على بيانات من المستخدم؟</div></div>
+                <ul class="options">
+                    <li>أ) print()</li><li>ب) input()</li><li>ج) type()</li><li>د) bool()</li>
+                </ul>
+                <div class="answer">ب</div>
+            </div>
+
+            <div class="question">
+                <div class="question-header"><div class="q-num">4</div><div class="q-text">ما نوع القيمة التي تعيدها input()؟</div></div>
+                <ul class="options">
+                    <li>أ) int</li><li>ب) float</li><li>ج) bool</li><li>د) str</li>
+                </ul>
+                <div class="answer">د</div>
+            </div>
+
+            <div class="question">
+                <div class="question-header"><div class="q-num">5</div><div class="q-text">ما نوع x = 25؟</div></div>
+                <ul class="options">
+                    <li>أ) str</li><li>ب) int</li><li>ج) float</li><li>د) bool</li>
+                </ul>
+                <div class="answer">ب</div>
+            </div>
+
+            <div class="question">
+                <div class="question-header"><div class="q-num">6</div><div class="q-text">ما نوع x = 25.5؟</div></div>
+                <ul class="options">
+                    <li>أ) str</li><li>ب) int</li><li>ج) float</li><li>د) bool</li>
+                </ul>
+                <div class="answer">ج</div>
+            </div>
+
+            <div class="question">
+                <div class="question-header"><div class="q-num">7</div><div class="q-text">ما نوع x = "25"؟</div></div>
+                <ul class="options">
+                    <li>أ) str</li><li>ب) int</li><li>ج) float</li><li>د) bool</li>
+                </ul>
+                <div class="answer">أ</div>
+            </div>
+
+            <div class="question">
+                <div class="question-header"><div class="q-num">8</div><div class="q-text">ما نوع x = True؟</div></div>
+                <ul class="options">
+                    <li>أ) str</li><li>ب) int</li><li>ج) float</li><li>د) bool</li>
+                </ul>
+                <div class="answer">د</div>
+            </div>
+
+            <div class="question">
+                <div class="question-header"><div class="q-num">9</div><div class="q-text">أي اسم متغير صحيح؟</div></div>
+                <ul class="options">
+                    <li>أ) 2student</li><li>ب) student name</li><li>ج) student_name</li><li>د) student-name</li>
+                </ul>
+                <div class="answer">ج</div>
+            </div>
+
+            <div class="question">
+                <div class="question-header"><div class="q-num">10</div><div class="q-text">ما ناتج: print(5 + 3)؟</div></div>
+                <ul class="options">
+                    <li>أ) 5 + 3</li><li>ب) 8</li><li>ج) 53</li><li>د) خطأ</li>
+                </ul>
+                <div class="answer">ب</div>
+            </div>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title advanced"><i class="fas fa-fire"></i> الجزء الثاني: صح أم خطأ</div>
+
+            <div class="question essay">
+                <div class="question-header"><div class="q-num">11</div><div class="q-text">Python لا تفرق بين name و Name.</div></div>
+                <div class="answer">خطأ ❌ — Python حساسة لحالة الأحرف</div>
+            </div>
+
+            <div class="question essay">
+                <div class="question-header"><div class="q-num">12</div><div class="q-text">التعليقات يتم تنفيذها بواسطة Python.</div></div>
+                <div class="answer">خطأ ❌ — التعليقات يتم تجاهلها</div>
+            </div>
+
+            <div class="question essay">
+                <div class="question-header"><div class="q-num">13</div><div class="q-text">input() ترجع دائمًا String.</div></div>
+                <div class="answer">صح ✅</div>
+            </div>
+
+            <div class="question essay">
+                <div class="question-header"><div class="q-num">14</div><div class="q-text">= للإسناد و == للمقارنة.</div></div>
+                <div class="answer">صح ✅</div>
+            </div>
+
+            <div class="question essay">
+                <div class="question-header"><div class="q-num">15</div><div class="q-text">اسم المتغير يمكن أن يبدأ برقم.</div></div>
+                <div class="answer">خطأ ❌</div>
+            </div>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title code"><i class="fas fa-code"></i> الجزء الثالث: تتبع الناتج</div>
+
+            <div class="question code-q">
+                <div class="question-header"><div class="q-num">16</div><div class="q-text">ما الناتج؟</div></div>
+                <div class="code-block"><code>x = 10
+print(x)
+x = 20
+print(x)</code></div>
+                <div class="answer">10 ثم 20</div>
+            </div>
+
+            <div class="question code-q">
+                <div class="question-header"><div class="q-num">17</div><div class="q-text">ما الناتج؟</div></div>
+                <div class="code-block"><code>print("5 + 3")</code></div>
+                <div class="answer">5 + 3 (لأنها String)</div>
+            </div>
+
+            <div class="question code-q">
+                <div class="question-header"><div class="q-num">18</div><div class="q-text">ما الناتج؟</div></div>
+                <div class="code-block"><code>name = "Ahmed"
+print("Hello", name)</code></div>
+                <div class="answer">Hello Ahmed</div>
+            </div>
+
+            <div class="question code-q">
+                <div class="question-header"><div class="q-num">19</div><div class="q-text">ما نوع age؟</div></div>
+                <div class="code-block"><code>age = input("Age: ")</code></div>
+                <div class="answer">str (دائمًا)</div>
+            </div>
+
+            <div class="question code-q">
+                <div class="question-header"><div class="q-num">20</div><div class="q-text">اكتب برنامج يطلب اسم الطالب ومدينته ويطبع: أهلا [الاسم] من [المدينة]</div></div>
+                <div class="answer">
+<pre style="direction:ltr; text-align:left; color:inherit; font-family:var(--font-code);">name = input("الاسم: ")
+city = input("المدينة: ")
+print("أهلا", name, "من", city)</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         المحاضرة الثانية
+         ============================================ -->
+    <section class="section" id="lec2">
+        <div class="section-header">
+            <div class="section-number">2</div>
+            <div>
+                <h2 class="section-title">المعاملات في بايثون</h2>
+                <p class="section-subtitle">Operators</p>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-bullseye"></i> أهداف المحاضرة</h3>
+            <ul class="list-modern">
+                <li><strong>العمليات الحسابية الأساسية</strong></li>
+                <li><strong>معاملات المقارنة والمنطق</strong></li>
+                <li><strong>معاملات الإسناد المختصرة</strong></li>
+                <li><strong>تحويل نوع البيانات بـ int(), float(), str()</strong></li>
+                <li><strong>بناء آلة حاسبة تفاعلية</strong></li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-calculator"></i> 1. المعاملات الحسابية (Arithmetic Operators)</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>الرمز</th><th>المعنى</th><th>مثال</th><th>النتيجة</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>+</code></td><td>جمع</td><td>5 + 3</td><td>8</td></tr>
+                        <tr><td><code>-</code></td><td>طرح</td><td>10 - 4</td><td>6</td></tr>
+                        <tr><td><code>*</code></td><td>ضرب</td><td>6 * 2</td><td>12</td></tr>
+                        <tr><td><code>/</code></td><td>قسمة عادية</td><td>7 / 2</td><td>3.5</td></tr>
+                        <tr><td><code>//</code></td><td>قسمة صحيحة</td><td>7 // 2</td><td>3</td></tr>
+                        <tr><td><code>%</code></td><td>باقي القسمة</td><td>7 % 2</td><td>1</td></tr>
+                        <tr><td><code>**</code></td><td>الأس</td><td>2 ** 3</td><td>8</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="info-box success">
+                <span class="box-title">🔥 استخدام ذكي لـ %</span>
+                لمعرفة إذا كان الرقم زوجي: <code>x % 2 == 0</code>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-sort-numeric-up"></i> 2. ترتيب العمليات</h3>
+            <p><strong>الأقواس → الأس → الضرب/القسمة → الجمع/الطرح</strong></p>
+            <div class="code-block"><code>print(2 + 3 * 4)      # 14 (مش 20)
+print((2 + 3) * 4)    # 20</code></div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-balance-scale"></i> 3. معاملات المقارنة (Comparison)</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>الرمز</th><th>المعنى</th><th>مثال</th><th>النتيجة</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>==</code></td><td>يساوي</td><td>5 == 5</td><td>True</td></tr>
+                        <tr><td><code>!=</code></td><td>لا يساوي</td><td>3 != 5</td><td>True</td></tr>
+                        <tr><td><code>&gt;</code></td><td>أكبر من</td><td>3 &gt; 10</td><td>False</td></tr>
+                        <tr><td><code>&lt;</code></td><td>أصغر من</td><td>3 &lt; 10</td><td>True</td></tr>
+                        <tr><td><code>&gt;=</code></td><td>أكبر أو يساوي</td><td>5 &gt;= 5</td><td>True</td></tr>
+                        <tr><td><code>&lt;=</code></td><td>أصغر أو يساوي</td><td>5 &lt;= 4</td><td>False</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="info-box warning">
+                <span class="box-title">⚠️ خطأ شائع</span>
+                <code>=</code> للإسناد، <code>==</code> للمقارنة. متلخبطهمش!
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-brain"></i> 4. المعاملات المنطقية (Logical)</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>الرمز</th><th>يعمل كـ</th><th>مثال</th><th>النتيجة</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>and</code></td><td>كل الشروط لازم True</td><td>True and False</td><td>False</td></tr>
+                        <tr><td><code>or</code></td><td>شرط واحد يكفي</td><td>True or False</td><td>True</td></tr>
+                        <tr><td><code>not</code></td><td>يعكس القيمة</td><td>not True</td><td>False</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-equals"></i> 5. معاملات الإسناد المختصرة</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>المختصر</th><th>المعنى</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>x += 5</code></td><td>x = x + 5</td></tr>
+                        <tr><td><code>x -= 5</code></td><td>x = x - 5</td></tr>
+                        <tr><td><code>x *= 2</code></td><td>x = x * 2</td></tr>
+                        <tr><td><code>x /= 2</code></td><td>x = x / 2</td></tr>
+                        <tr><td><code>x %= 3</code></td><td>x = x % 3</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-exchange-alt"></i> 6. تحويل نوع البيانات (Type Casting)</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>الدالة</th><th>التحويل إلى</th><th>مثال</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>int(x)</code></td><td>عدد صحيح</td><td>int("5") → 5</td></tr>
+                        <tr><td><code>float(x)</code></td><td>عدد عشري</td><td>float("3.14") → 3.14</td></tr>
+                        <tr><td><code>str(x)</code></td><td>نص</td><td>str(10) → "10"</td></tr>
+                        <tr><td><code>bool(x)</code></td><td>منطقي</td><td>bool(0) → False</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="info-box warning">
+                <span class="box-title">🚨 مشكلة input() الشهيرة</span>
+                <code>input()</code> بترجع String. لو عايز تجمع أرقام، لازم تحول بـ <code>int()</code> أو <code>float()</code>.
+                <div class="code-block" style="margin-top:15px;"><code>x = int(input("الرقم الأول: "))
+y = int(input("الرقم الثاني: "))
+print(x + y)   # جمع صحيح</code></div>
+            </div>
+        </div>
+
+        <div class="cheat-sheet">
+            <h3><i class="fas fa-star"></i> Cheat Sheet — المحاضرة الثانية</h3>
+            <div class="cheat-grid">
+                <div class="cheat-item"><strong>/</strong><span>قسمة عادية</span></div>
+                <div class="cheat-item"><strong>//</strong><span>قسمة صحيحة</span></div>
+                <div class="cheat-item"><strong>%</strong><span>باقي القسمة</span></div>
+                <div class="cheat-item"><strong>**</strong><span>الأس</span></div>
+                <div class="cheat-item"><strong>==</strong><span>مقارنة</span></div>
+                <div class="cheat-item"><strong>=</strong><span>إسناد</span></div>
+                <div class="cheat-item"><strong>and</strong><span>كل الشروط</span></div>
+                <div class="cheat-item"><strong>or</strong><span>شرط واحد يكفي</span></div>
+                <div class="cheat-item"><strong>not</strong><span>عكس القيمة</span></div>
+                <div class="cheat-item"><strong>int(input())</strong><span>تحويل فوري</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- أسئلة المحاضرة الثانية -->
+    <div class="questions-section">
+        <div class="questions-header">
+            <h2><i class="fas fa-question-circle"></i> 20 سؤال على المحاضرة الثانية</h2>
+            <p>اختبر فهمك للمعاملات</p>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title"><i class="fas fa-layer-group"></i> الجزء الأول: اختيار من متعدد</div>
+
+            <div class="question"><div class="question-header"><div class="q-num">1</div><div class="q-text">ما الـ Operator المستخدم للقسمة العادية؟</div></div>
+            <ul class="options"><li>أ) //</li><li>ب) %</li><li>ج) /</li><li>د) **</li></ul>
+            <div class="answer">ج</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">2</div><div class="q-text">ما ناتج: 7 // 2؟</div></div>
+            <ul class="options"><li>أ) 3</li><li>ب) 3.5</li><li>ج) 1</li><li>د) 4</li></ul>
+            <div class="answer">أ</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">3</div><div class="q-text">ما ناتج: 7 % 2؟</div></div>
+            <ul class="options"><li>أ) 3</li><li>ب) 3.5</li><li>ج) 1</li><li>د) 4</li></ul>
+            <div class="answer">ج</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">4</div><div class="q-text">ما ناتج: 2 ** 5؟</div></div>
+            <ul class="options"><li>أ) 10</li><li>ب) 25</li><li>ج) 32</li><li>د) 7</li></ul>
+            <div class="answer">ج</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">5</div><div class="q-text">ما ناتج: 10 / 4؟</div></div>
+            <ul class="options"><li>أ) 2</li><li>ب) 2.5</li><li>ج) 3</li><li>د) 2.4</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">6</div><div class="q-text">ما ناتج: 10 // 4؟</div></div>
+            <ul class="options"><li>أ) 2</li><li>ب) 2.5</li><li>ج) 3</li><li>د) 4</li></ul>
+            <div class="answer">أ</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">7</div><div class="q-text">أي Operator يستخدم لمعرفة باقي القسمة؟</div></div>
+            <ul class="options"><li>أ) /</li><li>ب) //</li><li>ج) %</li><li>د) **</li></ul>
+            <div class="answer">ج</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">8</div><div class="q-text">ما نتيجة: 10 == 10؟</div></div>
+            <ul class="options"><li>أ) True</li><li>ب) False</li><li>ج) 10</li><li>د) خطأ</li></ul>
+            <div class="answer">أ</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">9</div><div class="q-text">ما نتيجة: 10 != 10؟</div></div>
+            <ul class="options"><li>أ) True</li><li>ب) False</li><li>ج) 10</li><li>د) خطأ</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">10</div><div class="q-text">ما نتيجة: not True؟</div></div>
+            <ul class="options"><li>أ) True</li><li>ب) False</li><li>ج) None</li><li>د) خطأ</li></ul>
+            <div class="answer">ب</div></div>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title advanced"><i class="fas fa-fire"></i> الجزء الثاني: منطقي وترتيب</div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">11</div><div class="q-text">age = 20, has_id = True → ما ناتج: age >= 18 and has_id؟</div></div>
+            <div class="answer">True (الشرطين True)</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">12</div><div class="q-text">age = 15, has_id = True → ما ناتج: age >= 18 or has_id؟</div></div>
+            <div class="answer">True (شرط واحد يكفي)</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">13</div><div class="q-text">ما ناتج: print(2 + 3 * 4)؟</div></div>
+            <div class="answer">14 (الضرب أولًا)</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">14</div><div class="q-text">ما ناتج: print((2 + 3) * 4)؟</div></div>
+            <div class="answer">20 (الأقواس أولًا)</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">15</div><div class="q-text">ما قيمة x بعد: x = 10; x += 5; x *= 2؟</div></div>
+            <div class="answer">30 (15 × 2)</div></div>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title code"><i class="fas fa-code"></i> الجزء الثالث: كتابة كود وتصحيح</div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">16</div><div class="q-text">ما الناتج لو المستخدم أدخل 5 ثم 3؟</div></div>
+            <div class="code-block"><code>x = input()
+y = input()
+print(x + y)</code></div>
+            <div class="answer">53 (لأنهم String)</div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">17</div><div class="q-text">صحح الكود لجمع رقمين بشكل صحيح:</div></div>
+            <div class="code-block"><code>x = input("First: ")
+y = input("Second: ")
+print(x + y)</code></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">x = int(input("First: "))
+y = int(input("Second: "))
+print(x + y)</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">18</div><div class="q-text">اكتب برنامج يحسب متوسط رقمين.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">a = float(input("الرقم الأول: "))
+b = float(input("الرقم الثاني: "))
+print((a + b) / 2)</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">19</div><div class="q-text">اكتب برنامج يحسب مساحة مستطيل.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">length = float(input("الطول: "))
+width = float(input("العرض: "))
+area = length * width
+print("المساحة:", area)</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">20</div><div class="q-text">اكتب برنامج يتحقق إذا كان الرقم زوجي (باستخدام %).</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">n = int(input("الرقم: "))
+print(n % 2 == 0)   # True لو زوجي</pre>
+            </div></div>
+        </div>
+    </div>
+
+    <!-- ⬇️⬇️⬇️ يتبع في الجزء الثاني: المحاضرات 3 و 4 و 5 ⬇️⬇️⬇️ -->
+    <!-- ============================================
+         المحاضرة الثالثة
+         ============================================ -->
+    <section class="section" id="lec3">
+        <div class="section-header">
+            <div class="section-number">3</div>
+            <div>
+                <h2 class="section-title">اتخاذ القرار</h2>
+                <p class="section-subtitle">Decision Making</p>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-bullseye"></i> أهداف المحاضرة</h3>
+            <ul class="list-modern">
+                <li><strong>فهم if / else / elif</strong></li>
+                <li><strong>الشروط المتداخلة (Nested if)</strong></li>
+                <li><strong>دمج الشروط بـ and / or / not</strong></li>
+                <li><strong>بناء نظام تسجيل دخول</strong></li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-brain"></i> 1. يعني إيه Decision Making؟</h3>
+            <p>في حياتك بتاخد قرارات مبنية على شروط. الكمبيوتر كمان محتاج ياخد قرارات. الأداة هي <code>if</code>.</p>
+            <div class="definition">
+                <strong>Decision Making:</strong> قدرة البرنامج على تنفيذ كود معين أو عدم تنفيذه بناءً على تحقق شرط معين.
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-code-branch"></i> 2. if — الشرط البسيط</h3>
+            <p><strong>الشكل العام:</strong></p>
+            <div class="code-block"><code>if condition:
+    # الكود</code></div>
+            <div class="code-block"><code>age = int(input("عمرك: "))
+
+if age >= 18:
+    print("يمكنك التصويت")</code></div>
+            <div class="info-box warning">
+                <span class="box-title">⚠️ تركة مهمة</span>
+                الإزاحة (4 مسافات) <strong>إجبارية</strong>. لو نسيتها → <code>IndentationError</code>.
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-code-branch"></i> 3. if / else</h3>
+            <div class="code-block"><code>grade = int(input("درجتك: "))
+
+if grade >= 50:
+    print("ناجح 🎉")
+else:
+    print("راسب 😢")</code></div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-code-branch"></i> 4. elif — أكتر من خيار</h3>
+            <div class="code-block"><code>g = int(input("الدرجة: "))
+
+if g >= 90:
+    print("ممتاز A")
+elif g >= 80:
+    print("جيد جداً B")
+elif g >= 70:
+    print("جيد C")
+elif g >= 60:
+    print("مقبول D")
+else:
+    print("راسب F")</code></div>
+            <div class="info-box note">
+                <span class="box-title">⭐ تركة</span>
+                بايثون تفحص الشروط <strong>بالترتيب من فوق لتحت</strong>، وأول شرط يتحقق ينفذ ويخرج.
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-sitemap"></i> 5. Nested if — الشروط المتداخلة</h3>
+            <div class="code-block"><code>age = int(input("العمر: "))
+
+if age >= 18:
+    id = input("هل معك بطاقة؟ (y/n) ")
+    if id == "y":
+        print("مسموح بالدخول")
+    else:
+        print("يجب إحضار البطاقة")
+else:
+    print("غير مسموح: أقل من 18")</code></div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-brain"></i> 6. دمج الشروط بالمنطق</h3>
+            <div class="code-block"><code>t = int(input("الحرارة: "))
+r = input("يوجد مطر؟ (y/n) ")
+
+if t > 30 and r == "n":
+    print("اذهب للسياحة")
+elif t < 15 or r == "y":
+    print("ابق في البيت")
+else:
+    print("الجو عادي")</code></div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-sign-in-alt"></i> 7. مشروع: نظام تسجيل دخول</h3>
+            <div class="code-block"><code>USER = "ali"
+PASS = "1234"
+
+u = input("اسم المستخدم: ")
+p = input("كلمة السر: ")
+
+if u == USER and p == PASS:
+    print("مرحباً بك يا", u)
+elif u == USER:
+    print("كلمة السر خاطئة")
+else:
+    print("المستخدم غير موجود")</code></div>
+        </div>
+
+        <div class="cheat-sheet">
+            <h3><i class="fas fa-star"></i> Cheat Sheet — المحاضرة الثالثة</h3>
+            <div class="cheat-grid">
+                <div class="cheat-item"><strong>if</strong><span>تنفيذ بشرط</span></div>
+                <div class="cheat-item"><strong>else</strong><span>لو الشرط فشل</span></div>
+                <div class="cheat-item"><strong>elif</strong><span>أكتر من شرط</span></div>
+                <div class="cheat-item"><strong>and</strong><span>كل الشروط True</span></div>
+                <div class="cheat-item"><strong>or</strong><span>شرط واحد يكفي</span></div>
+                <div class="cheat-item"><strong>not</strong><span>عكس القيمة</span></div>
+                <div class="cheat-item"><strong>Nested if</strong><span>شرط جوه شرط</span></div>
+                <div class="cheat-item"><strong>Indentation</strong><span>4 مسافات إجبارية</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- أسئلة المحاضرة الثالثة -->
+    <div class="questions-section">
+        <div class="questions-header">
+            <h2><i class="fas fa-question-circle"></i> 20 سؤال على المحاضرة الثالثة</h2>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title"><i class="fas fa-layer-group"></i> الجزء الأول: اختيار من متعدد</div>
+
+            <div class="question"><div class="question-header"><div class="q-num">1</div><div class="q-text">ما معنى Decision Making؟</div></div>
+            <ul class="options"><li>أ) تكرار الكود</li><li>ب) اتخاذ قرار بناءً على شرط</li><li>ج) تعريف متغير</li><li>د) طباعة نص</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">2</div><div class="q-text">ما الكلمة المستخدمة للشرط الأساسي؟</div></div>
+            <ul class="options"><li>أ) for</li><li>ب) while</li><li>ج) if</li><li>د) def</li></ul>
+            <div class="answer">ج</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">3</div><div class="q-text">ما الكلمة المستخدمة للخيار البديل؟</div></div>
+            <ul class="options"><li>أ) elif</li><li>ب) else</li><li>ج) then</li><li>د) case</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">4</div><div class="q-text">ما الكلمة المستخدمة لأكتر من خيار؟</div></div>
+            <ul class="options"><li>أ) else if</li><li>ب) elif</li><li>ج) elseif</li><li>د) switch</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">5</div><div class="q-text">ما ناتج: x = 10; if x > 5: print("A") else: print("B")</div></div>
+            <ul class="options"><li>أ) A</li><li>ب) B</li><li>ج) A B</li><li>د) خطأ</li></ul>
+            <div class="answer">أ</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">6</div><div class="q-text">ما ناتج: x = 3; if x > 5: print("A") else: print("B")</div></div>
+            <ul class="options"><li>أ) A</li><li>ب) B</li><li>ج) A B</li><li>د) خطأ</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">7</div><div class="q-text">ما ناتج: x = 85; if x >= 90: A; elif x >= 80: B; elif x >= 70: C</div></div>
+            <ul class="options"><li>أ) A</li><li>ب) B</li><li>ج) C</li><li>د) A B C</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">8</div><div class="q-text">ما معنى IndentationError؟</div></div>
+            <ul class="options"><li>أ) خطأ في النوع</li><li>ب) خطأ في الإزاحة</li><li>ج) خطأ في الاسم</li><li>د) خطأ في القيمة</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">9</div><div class="q-text">ما ناتج: True and False؟</div></div>
+            <ul class="options"><li>أ) True</li><li>ب) False</li><li>ج) None</li><li>د) خطأ</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">10</div><div class="q-text">ما ناتج: True or False؟</div></div>
+            <ul class="options"><li>أ) True</li><li>ب) False</li><li>ج) None</li><li>د) خطأ</li></ul>
+            <div class="answer">أ</div></div>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title advanced"><i class="fas fa-fire"></i> الجزء الثاني: صح أم خطأ</div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">11</div><div class="q-text">else لازم يكون بعدها شرط.</div></div>
+            <div class="answer">خطأ ❌</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">12</div><div class="q-text">الإزاحة في بايثون اختيارية.</div></div>
+            <div class="answer">خطأ ❌ — إجبارية</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">13</div><div class="q-text">x = 100; if x >= 90: A; elif x >= 80: B → هيطبع A و B.</div></div>
+            <div class="answer">خطأ ❌ — هيطبع A بس</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">14</div><div class="q-text">not True = False.</div></div>
+            <div class="answer">صح ✅</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">15</div><div class="q-text">age = input(); if age >= 18 → كود صح.</div></div>
+            <div class="answer">خطأ ❌ — لازم int(input()) لأن input ترجع str</div></div>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title code"><i class="fas fa-code"></i> الجزء الثالث: اكتشف الخطأ واكتب كود</div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">16</div><div class="q-text">اكتشف الخطأ:</div></div>
+            <div class="code-block"><code>if x > 5
+    print("A")</code></div>
+            <div class="answer">ناقص النقطتين <code>:</code> بعد الشرط</div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">17</div><div class="q-text">اكتشف الخطأ:</div></div>
+            <div class="code-block"><code>if x > 5:
+print("A")</code></div>
+            <div class="answer">ناقص الإزاحة (4 مسافات)</div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">18</div><div class="q-text">اكتب كود يحدد إذا كان الرقم موجب أم سالب أم صفر.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">n = int(input("الرقم: "))
+if n > 0:
+    print("موجب")
+elif n < 0:
+    print("سالب")
+else:
+    print("صفر")</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">19</div><div class="q-text">اكتب كود يحدد إذا كان الرقم زوجي أم فردي.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">n = int(input("الرقم: "))
+if n % 2 == 0:
+    print("زوجي")
+else:
+    print("فردي")</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">20</div><div class="q-text">اكتب كود يحدد أكبر رقم من رقمين.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">a = int(input("الأول: "))
+b = int(input("التاني: "))
+if a > b:
+    print("الأكبر:", a)
+elif b > a:
+    print("الأكبر:", b)
+else:
+    print("متساويين")</pre>
+            </div></div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         المحاضرة الرابعة
+         ============================================ -->
+    <section class="section" id="lec4">
+        <div class="section-header">
+            <div class="section-number">4</div>
+            <div>
+                <h2 class="section-title">الحلقات التكرارية</h2>
+                <p class="section-subtitle">Loops</p>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-bullseye"></i> أهداف المحاضرة</h3>
+            <ul class="list-modern">
+                <li><strong>while و for</strong></li>
+                <li><strong>range()</strong></li>
+                <li><strong>break و continue</strong></li>
+                <li><strong>الحلقات المتداخلة والأنماط</strong></li>
+                <li><strong>مشروع جدول الضرب</strong></li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-sync"></i> 1. while — التكرار بشرط</h3>
+            <div class="code-block"><code>i = 1
+
+while i <= 5:
+    print(i)
+    i += 1</code></div>
+            <div class="output-block">1
+2
+3
+4
+5</div>
+            <div class="info-box warning">
+                <span class="box-title">🚨 Infinite Loop</span>
+                لو نسيت <code>i += 1</code> → الحلقة هتدور للأبد. للحل: <code>Ctrl + C</code>.
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-redo"></i> 2. for + range()</h3>
+            <div class="code-block"><code>for i in range(1, 6):
+    print(i)</code></div>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>الكود</th><th>الناتج</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>range(5)</code></td><td>0, 1, 2, 3, 4</td></tr>
+                        <tr><td><code>range(1, 6)</code></td><td>1, 2, 3, 4, 5</td></tr>
+                        <tr><td><code>range(0, 10, 2)</code></td><td>0, 2, 4, 6, 8</td></tr>
+                        <tr><td><code>range(10, 0, -1)</code></td><td>10, 9, 8, ..., 1</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="info-box note">
+                <span class="box-title">⭐ تركة</span>
+                <code>range(a, b)</code> — الرقم <code>b</code> <strong>حصري (exclusive)</strong> ومش بيتضمن.
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-stop"></i> 3. break و continue</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>break</th><th>continue</th></tr></thead>
+                    <tbody>
+                        <tr><td>توقف الحلقة كلها</td><td>تتخطى الدورة الحالية بس</td></tr>
+                        <tr><td>تخرج من الحلقة</td><td>تفضل في الحلقة</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="code-block"><code># break
+for i in range(10):
+    if i == 5:
+        break
+    print(i)   # 0 1 2 3 4
+
+# continue
+for i in range(6):
+    if i == 3:
+        continue
+    print(i)   # 0 1 2 4 5</code></div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-layer-group"></i> 4. Nested Loops — الحلقات المتداخلة</h3>
+            <div class="code-block"><code>for i in range(1, 4):
+    for j in range(1, 4):
+        print(i, j, end=" ")
+    print()</code></div>
+            <div class="output-block">1 1 1 2 1 3
+2 1 2 2 2 3
+3 1 3 2 3 3</div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-star"></i> 5. رسم الأنماط (Patterns)</h3>
+            <div class="code-block"><code>for i in range(1, 6):
+    print("*" * i)</code></div>
+            <div class="output-block">*
+**
+***
+****
+*****</div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-table"></i> 6. مشروع: جدول الضرب</h3>
+            <div class="code-block"><code>n = int(input("جدول رقم: "))
+
+for i in range(1, 13):
+    print(n, "x", i, "=", n * i)</code></div>
+        </div>
+
+        <div class="cheat-sheet">
+            <h3><i class="fas fa-star"></i> Cheat Sheet — المحاضرة الرابعة</h3>
+            <div class="cheat-grid">
+                <div class="cheat-item"><strong>while</strong><span>تكرار بشرط</span></div>
+                <div class="cheat-item"><strong>for</strong><span>تكرار لعدد معروف</span></div>
+                <div class="cheat-item"><strong>range(a,b)</strong><span>من a لـ b-1</span></div>
+                <div class="cheat-item"><strong>range(a,b,s)</strong><span>بخطوة s</span></div>
+                <div class="cheat-item"><strong>break</strong><span>إيقاف الحلقة</span></div>
+                <div class="cheat-item"><strong>continue</strong><span>تخطي الدورة</span></div>
+                <div class="cheat-item"><strong>Nested Loops</strong><span>حلقة جوه حلقة</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- أسئلة المحاضرة الرابعة -->
+    <div class="questions-section">
+        <div class="questions-header">
+            <h2><i class="fas fa-question-circle"></i> 20 سؤال على المحاضرة الرابعة</h2>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title"><i class="fas fa-layer-group"></i> الجزء الأول: اختيار من متعدد</div>
+
+            <div class="question"><div class="question-header"><div class="q-num">1</div><div class="q-text">ما معنى Loop؟</div></div>
+            <ul class="options"><li>أ) شرط</li><li>ب) تكرار</li><li>ج) دالة</li><li>د) متغير</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">2</div><div class="q-text">أي نوع تكرار نستخدمه لو عارفين عدد المرات؟</div></div>
+            <ul class="options"><li>أ) while</li><li>ب) for</li><li>ج) if</li><li>د) def</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">3</div><div class="q-text">أي نوع تكرار نستخدمه لو مش عارفين عدد المرات؟</div></div>
+            <ul class="options"><li>أ) for</li><li>ب) while</li><li>ج) if</li><li>د) else</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">4</div><div class="q-text">ما ناتج range(5)؟</div></div>
+            <ul class="options"><li>أ) 1,2,3,4,5</li><li>ب) 0,1,2,3,4</li><li>ج) 0,1,2,3,4,5</li><li>د) 1,2,3,4</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">5</div><div class="q-text">ما ناتج range(1, 6)؟</div></div>
+            <ul class="options"><li>أ) 1,2,3,4,5</li><li>ب) 1,2,3,4,5,6</li><li>ج) 0,1,2,3,4</li><li>د) 1,2,3,4</li></ul>
+            <div class="answer">أ</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">6</div><div class="q-text">ما ناتج range(0, 10, 3)؟</div></div>
+            <ul class="options"><li>أ) 0,3,6,9</li><li>ب) 0,3,6,9,12</li><li>ج) 3,6,9</li><li>د) 0,1,2,3</li></ul>
+            <div class="answer">أ</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">7</div><div class="q-text">ما الفرق بين break و continue؟</div></div>
+            <ul class="options"><li>أ) مفيش فرق</li><li>ب) break توقف كل الحلقة، continue تتخطى الدورة</li><li>ج) العكس</li><li>د) continue للـ while بس</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">8</div><div class="q-text">ما ناتج: total = 0; for i in range(1,6): total += i; print(total)</div></div>
+            <ul class="options"><li>أ) 10</li><li>ب) 15</li><li>ج) 20</li><li>د) 21</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">9</div><div class="q-text">ما ناتج: for i in range(3): print(i)</div></div>
+            <ul class="options"><li>أ) 1 2 3</li><li>ب) 0 1 2</li><li>ج) 0 1 2 3</li><li>د) 1 2</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">10</div><div class="q-text">ما ناتج: i = 3; while i > 0: print(i); i -= 1</div></div>
+            <ul class="options"><li>أ) 1 2 3</li><li>ب) 3 2 1</li><li>ج) 3 2 1 0</li><li>د) 0 1 2 3</li></ul>
+            <div class="answer">ب</div></div>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title advanced"><i class="fas fa-fire"></i> الجزء الثاني: تتبع الناتج</div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">11</div><div class="q-text">ما ناتج: for i in range(5): if i == 3: break; print(i)</div></div>
+            <div class="answer">0 1 2</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">12</div><div class="q-text">ما ناتج: for i in range(5): if i == 3: continue; print(i)</div></div>
+            <div class="answer">0 1 2 4</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">13</div><div class="q-text">ما ناتج: for i in range(2): for j in range(3): print(i, j)</div></div>
+            <div class="answer">0 0 / 0 1 / 0 2 / 1 0 / 1 1 / 1 2</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">14</div><div class="q-text">ما ناتج: for i in range(1, 4): print("*" * i)</div></div>
+            <div class="answer">* / ** / ***</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">15</div><div class="q-text">ما ناتج: for i in range(2, 10, 2): print(i)</div></div>
+            <div class="answer">2 4 6 8</div></div>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title code"><i class="fas fa-code"></i> الجزء الثالث: كتابة كود</div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">16</div><div class="q-text">اكتب كود يطبع الأرقام من 1 لـ 10.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">for i in range(1, 11):
+    print(i)</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">17</div><div class="q-text">اكتب كود يطبع الأرقام الزوجية من 1 لـ 20.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">for i in range(2, 21, 2):
+    print(i)</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">18</div><div class="q-text">اكتب كود يحسب مجموع الأرقام من 1 لـ 100.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">total = 0
+for i in range(1, 101):
+    total += i
+print(total)</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">19</div><div class="q-text">اكتب كود يطبع جدول ضرب الرقم 7.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">for i in range(1, 13):
+    print(7, "x", i, "=", 7 * i)</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">20</div><div class="q-text">اكتب كود يطلب رقم لحد ما المستخدم يدخل رقم موجب.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">n = int(input("أدخل رقم موجب: "))
+while n <= 0:
+    n = int(input("خطأ! أدخل رقم موجب: "))
+print("شكراً")</pre>
+            </div></div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         المحاضرة الخامسة
+         ============================================ -->
+    <section class="section" id="lec5">
+        <div class="section-header">
+            <div class="section-number">5</div>
+            <div>
+                <h2 class="section-title">النصوص والسلاسل</h2>
+                <p class="section-subtitle">Strings</p>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-bullseye"></i> أهداف المحاضرة</h3>
+            <ul class="list-modern">
+                <li><strong>الفهرسة (Index) والتقطيع (Slice)</strong></li>
+                <li><strong>دوال النصوص المهمة</strong></li>
+                <li><strong>التكرار على حروف النص</strong></li>
+                <li><strong>بناء محلل نص</strong></li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-font"></i> 1. إنشاء النص والفهرسة</h3>
+            <p>كل حرف في النص له رقم (Index) يبدأ من <strong>0</strong>.</p>
+            <div class="code-block"><code>name = "Python"
+print(name[0])    # P
+print(name[3])    # h
+print(name[-1])   # n (آخر حرف)</code></div>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>الحرف</th><th>P</th><th>y</th><th>t</th><th>h</th><th>o</th><th>n</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Index</strong></td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
+                        <tr><td><strong>Index سالب</strong></td><td>-6</td><td>-5</td><td>-4</td><td>-3</td><td>-2</td><td>-1</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-cut"></i> 2. التقطيع (Slicing)</h3>
+            <p><strong>الشكل العام:</strong> <code>s[start:end:step]</code> — <code>end</code> حصري.</p>
+            <div class="code-block"><code>s = "programming"
+print(s[0:4])     # Prog
+print(s[:4])      # Prog
+print(s[4:])      # ramming
+print(s[::2])     # pormig
+print(s[::-1])    # gnimmargorp (عكس)</code></div>
+            <div class="info-box note">
+                <span class="box-title">⭐ تركة</span>
+                <code>s[::-1]</code> هي أشهر طريقة لعكس النص في بايثون.
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-tools"></i> 3. أهم دوال النصوص</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>الدالة</th><th>الوظيفة</th><th>مثال</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>len(s)</code></td><td>الطول</td><td>len("hi") → 2</td></tr>
+                        <tr><td><code>s.upper()</code></td><td>حروف كبيرة</td><td>"hi".upper() → "HI"</td></tr>
+                        <tr><td><code>s.lower()</code></td><td>حروف صغيرة</td><td>"HI".lower() → "hi"</td></tr>
+                        <tr><td><code>s.title()</code></td><td>أول حرف كبير</td><td>"ali hamed".title() → "Ali Hamed"</td></tr>
+                        <tr><td><code>s.replace(a,b)</code></td><td>استبدال</td><td>"cat".replace("c","b") → "bat"</td></tr>
+                        <tr><td><code>s.find(x)</code></td><td>موقع أول ظهور</td><td>"cat".find("a") → 1</td></tr>
+                        <tr><td><code>s.count(x)</code></td><td>عدد مرات الظهور</td><td>"banana".count("a") → 3</td></tr>
+                        <tr><td><code>s.split(x)</code></td><td>تقسيم</td><td>"a,b,c".split(",") → ["a","b","c"]</td></tr>
+                        <tr><td><code>s.strip()</code></td><td>إزالة الفراغات</td><td>" hi ".strip() → "hi"</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-redo"></i> 4. التكرار على الحروف</h3>
+            <div class="code-block"><code>name = "Ali"
+for ch in name:
+    print(ch)
+
+# عد حرف معين
+text = "programming"
+count = 0
+for ch in text:
+    if ch == "m":
+        count += 1
+print(count)   # 2</code></div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-lock"></i> 5. النصوص Immutable</h3>
+            <div class="info-box warning">
+                <span class="box-title">⚠️ تركة</span>
+                مش بتقدر تعدل حرف في النص مباشرة.
+                <div class="code-block" style="margin-top:15px;"><code>name = "Ali"
+name[0] = "B"   # ❌ TypeError
+
+# الحل:
+name = "B" + name[1:]   # Bli</code></div>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-search"></i> 6. مشروع: محلل نص</h3>
+            <div class="code-block"><code>text = input("أدخل جملة: ")
+print("الأحرف:", len(text))
+print("الكلمات:", len(text.split()))
+print("الكبير:", text.upper())
+print("الصغير:", text.lower())
+print("عكس:", text[::-1])</code></div>
+        </div>
+
+        <div class="cheat-sheet">
+            <h3><i class="fas fa-star"></i> Cheat Sheet — المحاضرة الخامسة</h3>
+            <div class="cheat-grid">
+                <div class="cheat-item"><strong>s[i]</strong><span>الحرف عند الفهرس i</span></div>
+                <div class="cheat-item"><strong>s[-1]</strong><span>آخر حرف</span></div>
+                <div class="cheat-item"><strong>s[a:b]</strong><span>تقطيع (b حصري)</span></div>
+                <div class="cheat-item"><strong>s[::-1]</strong><span>عكس النص</span></div>
+                <div class="cheat-item"><strong>len(s)</strong><span>طول النص</span></div>
+                <div class="cheat-item"><strong>s.upper()</strong><span>حروف كبيرة</span></div>
+                <div class="cheat-item"><strong>s.lower()</strong><span>حروف صغيرة</span></div>
+                <div class="cheat-item"><strong>s.split()</strong><span>تقسيم النص</span></div>
+                <div class="cheat-item"><strong>s.count(x)</strong><span>عدد مرات الظهور</span></div>
+                <div class="cheat-item"><strong>Immutable</strong><span>مش بتتعدل</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- أسئلة المحاضرة الخامسة -->
+    <div class="questions-section">
+        <div class="questions-header">
+            <h2><i class="fas fa-question-circle"></i> 20 سؤال على المحاضرة الخامسة</h2>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title"><i class="fas fa-layer-group"></i> الجزء الأول: اختيار من متعدد</div>
+
+            <div class="question"><div class="question-header"><div class="q-num">1</div><div class="q-text">ما معنى String؟</div></div>
+            <ul class="options"><li>أ) رقم</li><li>ب) نص</li><li>ج) منطقي</li><li>د) قائمة</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">2</div><div class="q-text">الفهرسة في بايثون تبدأ من؟</div></div>
+            <ul class="options"><li>أ) 1</li><li>ب) 0</li><li>ج) -1</li><li>د) 2</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">3</div><div class="q-text">ما ناتج "Python"[0]؟</div></div>
+            <ul class="options"><li>أ) P</li><li>ب) y</li><li>ج) n</li><li>د) o</li></ul>
+            <div class="answer">أ</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">4</div><div class="q-text">ما ناتج "Python"[-1]؟</div></div>
+            <ul class="options"><li>أ) P</li><li>ب) y</li><li>ج) n</li><li>د) o</li></ul>
+            <div class="answer">ج</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">5</div><div class="q-text">ما ناتج "Python"[1:4]؟</div></div>
+            <ul class="options"><li>أ) Pyt</li><li>ب) yth</li><li>ج) tho</li><li>د) hon</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">6</div><div class="q-text">ما ناتج "Python"[::-1]؟</div></div>
+            <ul class="options"><li>أ) Python</li><li>ب) nohtyP</li><li>ج) P</li><li>د) n</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">7</div><div class="q-text">ما ناتج len("Hello World")؟</div></div>
+            <ul class="options"><li>أ) 10</li><li>ب) 11</li><li>ج) 12</li><li>د) 9</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">8</div><div class="q-text">ما ناتج "hello".upper()؟</div></div>
+            <ul class="options"><li>أ) Hello</li><li>ب) HELLO</li><li>ج) hello</li><li>د) HeLLo</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">9</div><div class="q-text">ما ناتج "a,b,c".split(",")؟</div></div>
+            <ul class="options"><li>أ) "abc"</li><li>ب) ["a","b","c"]</li><li>ج) "a b c"</li><li>د) خطأ</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">10</div><div class="q-text">ما ناتج "banana".count("a")؟</div></div>
+            <ul class="options"><li>أ) 1</li><li>ب) 2</li><li>ج) 3</li><li>د) 4</li></ul>
+            <div class="answer">ج</div></div>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title advanced"><i class="fas fa-fire"></i> الجزء الثاني: صح أم خطأ</div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">11</div><div class="q-text">النصوص في بايثون قابلة للتعديل (Mutable).</div></div>
+            <div class="answer">خطأ ❌ — Immutable</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">12</div><div class="q-text">s[::-1] بتعكس النص.</div></div>
+            <div class="answer">صح ✅</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">13</div><div class="q-text">s[a:b] — الرقم b بيتضمن.</div></div>
+            <div class="answer">خطأ ❌ — b حصري</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">14</div><div class="q-text">len("Python") = 6.</div></div>
+            <div class="answer">صح ✅</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">15</div><div class="q-text">ممكن نعدل حرف في String مباشرة.</div></div>
+            <div class="answer">خطأ ❌ — TypeError</div></div>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title code"><i class="fas fa-code"></i> الجزء الثالث: كتابة كود</div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">16</div><div class="q-text">اكتب كود يطبع كل حرف في النص "Hello" في سطر.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">for ch in "Hello":
+    print(ch)</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">17</div><div class="q-text">اكتب كود يعد عدد حرف "l" في "Hello".</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">text = "Hello"
+count = 0
+for ch in text:
+    if ch == "l":
+        count += 1
+print(count)</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">18</div><div class="q-text">اكتب كود ياخد جملة ويطبعها معكوسة.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">text = input("الجملة: ")
+print(text[::-1])</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">19</div><div class="q-text">اكتب كود ياخد كلمة ويطبع عدد حروفها.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">word = input("الكلمة: ")
+print(len(word))</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">20</div><div class="q-text">اكتب كود ياخد جملة ويطبع عدد كلماتها.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">text = input("الجملة: ")
+print(len(text.split()))</pre>
+            </div></div>
+        </div>
+    </div>
+
+    <!-- ⬇️⬇️⬇️ يتبع في الجزء الثالث: المحاضرات 6 و 7 + الفوتر ⬇️⬇️⬇️ -->
+         <!-- ============================================
+         المحاضرة السادسة
+         ============================================ -->
+    <section class="section" id="lec6">
+        <div class="section-header">
+            <div class="section-number">6</div>
+            <div>
+                <h2 class="section-title">القوائم</h2>
+                <p class="section-subtitle">Lists</p>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-bullseye"></i> أهداف المحاضرة</h3>
+            <ul class="list-modern">
+                <li><strong>إنشاء القوائم والوصول للعناصر</strong></li>
+                <li><strong>إضافة/حذف/تعديل العناصر</strong></li>
+                <li><strong>ترتيب وعكس القوائم</strong></li>
+                <li><strong>القوائم المتداخلة</strong></li>
+                <li><strong>مشروع دفتر الأسماء</strong></li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-list"></i> 1. يعني إيه List؟</h3>
+            <div class="definition">
+                <strong>List:</strong> مجموعة مرتبة من العناصر، ممكن تحتوي على أنواع بيانات مختلفة، وقابلة للتعديل (Mutable).
+            </div>
+            <div class="code-block"><code>grades = [70, 85, 92, 55]
+names = ["Ali", "Sara", "Omar"]
+mixed = [1, "Ali", 3.14, True]
+empty = []</code></div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-search"></i> 2. الفهرسة (Indexing)</h3>
+            <p>زي النصوص بالظبط — كل عنصر له Index يبدأ من <strong>0</strong>.</p>
+            <div class="code-block"><code>fruits = ["apple", "banana", "cherry"]
+print(fruits[0])    # apple
+print(fruits[-1])   # cherry
+print(fruits[1])    # banana</code></div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-edit"></i> 3. التعديل على العناصر</h3>
+            <div class="code-block"><code>fruits = ["apple", "banana", "cherry"]
+fruits[1] = "mango"
+print(fruits)   # ['apple', 'mango', 'cherry']</code></div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-plus-circle"></i> 4. إضافة عناصر</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>الدالة</th><th>الوظيفة</th><th>مثال</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>append(x)</code></td><td>إضافة في النهاية</td><td>[1,2].append(3) → [1,2,3]</td></tr>
+                        <tr><td><code>insert(i, x)</code></td><td>إضافة في موقع</td><td>[1,2].insert(0,0) → [0,1,2]</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-trash"></i> 5. حذف عناصر</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>الدالة</th><th>الوظيفة</th><th>مثال</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>remove(x)</code></td><td>حذف بالقيمة (أول ظهور)</td><td>[1,2,3].remove(2) → [1,3]</td></tr>
+                        <tr><td><code>pop(i)</code></td><td>حذف بالفهرس</td><td>[1,2,3].pop() → [1,2]</td></tr>
+                        <tr><td><code>clear()</code></td><td>مسح الكل</td><td>[1,2,3].clear() → []</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-sort"></i> 6. ترتيب وعكس</h3>
+            <div class="code-block"><code>a = [3, 1, 2]
+a.sort()
+print(a)      # [1, 2, 3]
+
+a.reverse()
+print(a)      # [3, 2, 1]</code></div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-redo"></i> 7. التكرار على القائمة</h3>
+            <div class="code-block"><code>grades = [70, 85, 92, 55]
+total = 0
+
+for g in grades:
+    total += g
+
+print("المتوسط:", total / len(grades))   # 75.5</code></div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-layer-group"></i> 8. القوائم المتداخلة (Nested Lists)</h3>
+            <div class="code-block"><code>matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+print(matrix[0])       # [1, 2, 3]
+print(matrix[0][2])    # 3
+print(matrix[1][0])    # 4
+
+for row in matrix:
+    for num in row:
+        print(num, end=" ")
+    print()</code></div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-address-book"></i> 9. مشروع: دفتر الأسماء</h3>
+            <div class="code-block"><code>contacts = []
+
+while True:
+    op = input("1-إضافة 2-عرض 3-خروج: ")
+
+    if op == "1":
+        n = input("الاسم: ")
+        contacts.append(n)
+
+    elif op == "2":
+        for c in contacts:
+            print("-", c)
+
+    else:
+        break</code></div>
+        </div>
+
+        <div class="cheat-sheet">
+            <h3><i class="fas fa-star"></i> Cheat Sheet — المحاضرة السادسة</h3>
+            <div class="cheat-grid">
+                <div class="cheat-item"><strong>list[i]</strong><span>الوصول لعنصر</span></div>
+                <div class="cheat-item"><strong>list[i] = x</strong><span>تعديل عنصر</span></div>
+                <div class="cheat-item"><strong>append(x)</strong><span>إضافة في النهاية</span></div>
+                <div class="cheat-item"><strong>insert(i, x)</strong><span>إضافة في موقع</span></div>
+                <div class="cheat-item"><strong>remove(x)</strong><span>حذف بالقيمة</span></div>
+                <div class="cheat-item"><strong>pop(i)</strong><span>حذف بالفهرس</span></div>
+                <div class="cheat-item"><strong>clear()</strong><span>مسح الكل</span></div>
+                <div class="cheat-item"><strong>sort()</strong><span>ترتيب تصاعدي</span></div>
+                <div class="cheat-item"><strong>reverse()</strong><span>عكس</span></div>
+                <div class="cheat-item"><strong>Mutable</strong><span>قابلة للتعديل</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- أسئلة المحاضرة السادسة -->
+    <div class="questions-section">
+        <div class="questions-header">
+            <h2><i class="fas fa-question-circle"></i> 20 سؤال على المحاضرة السادسة</h2>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title"><i class="fas fa-layer-group"></i> الجزء الأول: اختيار من متعدد</div>
+
+            <div class="question"><div class="question-header"><div class="q-num">1</div><div class="q-text">ما معنى List؟</div></div>
+            <ul class="options"><li>أ) رقم</li><li>ب) نص</li><li>ج) قائمة من العناصر</li><li>د) منطقي</li></ul>
+            <div class="answer">ج</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">2</div><div class="q-text">هل القوائم قابلة للتعديل (Mutable)؟</div></div>
+            <ul class="options"><li>أ) نعم</li><li>ب) لا</li><li>ج) أحيانًا</li><li>د) مش معروف</li></ul>
+            <div class="answer">أ</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">3</div><div class="q-text">ما ناتج [10, 20, 30][0]؟</div></div>
+            <ul class="options"><li>أ) 0</li><li>ب) 10</li><li>ج) 20</li><li>د) 30</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">4</div><div class="q-text">ما ناتج [10, 20, 30][-1]؟</div></div>
+            <ul class="options"><li>أ) 10</li><li>ب) 20</li><li>ج) 30</li><li>د) خطأ</li></ul>
+            <div class="answer">ج</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">5</div><div class="q-text">ما ناتج: a = [1,2,3]; a.append(4); print(a)</div></div>
+            <ul class="options"><li>أ) [1,2,3]</li><li>ب) [4,1,2,3]</li><li>ج) [1,2,3,4]</li><li>د) [1,2,3,4,5]</li></ul>
+            <div class="answer">ج</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">6</div><div class="q-text">ما ناتج: a = [1,2,3]; a.insert(0,0); print(a)</div></div>
+            <ul class="options"><li>أ) [1,2,3,0]</li><li>ب) [0,1,2,3]</li><li>ج) [0,0,1,2,3]</li><li>د) خطأ</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">7</div><div class="q-text">ما ناتج: a = [1,2,3,2]; a.remove(2); print(a)</div></div>
+            <ul class="options"><li>أ) [1,3,2]</li><li>ب) [1,2,3]</li><li>ج) [1,3]</li><li>د) [1,2,3,2]</li></ul>
+            <div class="answer">أ</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">8</div><div class="q-text">ما ناتج: a = [1,2,3]; a.pop(); print(a)</div></div>
+            <ul class="options"><li>أ) [1,2,3]</li><li>ب) [1,2]</li><li>ج) [2,3]</li><li>د) []</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">9</div><div class="q-text">ما ناتج: a = [3,1,2]; a.sort(); print(a)</div></div>
+            <ul class="options"><li>أ) [3,2,1]</li><li>ب) [1,2,3]</li><li>ج) [2,1,3]</li><li>د) [1,3,2]</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">10</div><div class="q-text">ما ناتج: a = [1,2,3]; a.reverse(); print(a)</div></div>
+            <ul class="options"><li>أ) [1,2,3]</li><li>ب) [3,2,1]</li><li>ج) [1,3,2]</li><li>د) [2,1,3]</li></ul>
+            <div class="answer">ب</div></div>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title advanced"><i class="fas fa-fire"></i> الجزء الثاني: تتبع الناتج</div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">11</div><div class="q-text">ما ناتج: a = [1,2,3]; a.clear(); print(a)</div></div>
+            <div class="answer">[]</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">12</div><div class="q-text">ما ناتج: a = [1,2,3,4]; print(len(a))</div></div>
+            <div class="answer">4</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">13</div><div class="q-text">ما الفرق بين remove و pop؟</div></div>
+            <div class="answer">remove بتحذف بالقيمة (أول ظهور)، pop بتحذف بالفهرس</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">14</div><div class="q-text">ما ناتج: m = [[1,2],[3,4]]; print(m[1][0])</div></div>
+            <div class="answer">3</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">15</div><div class="q-text">ما ناتج: a = [1,2,3]; a.pop(0); print(a)</div></div>
+            <div class="answer">[2, 3]</div></div>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title code"><i class="fas fa-code"></i> الجزء الثالث: كتابة كود</div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">16</div><div class="q-text">اكتب كود ينشئ قائمة فيها 5 أرقام ويطبع مجموعهم.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">nums = [1, 2, 3, 4, 5]
+total = 0
+for n in nums:
+    total += n
+print(total)</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">17</div><div class="q-text">اكتب كود يضيف اسم "Ahmed" لقائمة فاضية.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">contacts = []
+contacts.append("Ahmed")
+print(contacts)</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">18</div><div class="q-text">اكتب كود يطبع كل عناصر قائمة في سطر.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">a = [1, 2, 3, 4]
+for x in a:
+    print(x)</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">19</div><div class="q-text">اكتب كود ياخد 5 أرقام من المستخدم ويخزنهم في قائمة.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">nums = []
+for i in range(5):
+    n = int(input("الرقم: "))
+    nums.append(n)
+print(nums)</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">20</div><div class="q-text">اكتب كود يطبع أكبر وأصغر رقم في قائمة.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">nums = [10, 3, 25, 7]
+print("الأكبر:", max(nums))
+print("الأصغر:", min(nums))</pre>
+            </div></div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         المحاضرة السابعة
+         ============================================ -->
+    <section class="section" id="lec7">
+        <div class="section-header">
+            <div class="section-number">7</div>
+            <div>
+                <h2 class="section-title">الدوال</h2>
+                <p class="section-subtitle">Functions</p>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-bullseye"></i> أهداف المحاضرة</h3>
+            <ul class="list-modern">
+                <li><strong>تعريف الدوال المخصصة</strong></li>
+                <li><strong>البارامترات والوسائط والعودة</strong></li>
+                <li><strong>نطاق المتغير (Scope)</strong></li>
+                <li><strong>استخدام الدوال المدمجة</strong></li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-cube"></i> 1. يعني إيه Function؟</h3>
+            <div class="definition">
+                <strong>Function:</strong> كتلة كود مستقلة، لها اسم، بتنفذ مهمة معينة، وممكن تستقبل بيانات وترجع نتيجة.
+            </div>
+            <p><strong>ليه بنستخدمها؟</strong></p>
+            <ul class="list-modern">
+                <li><strong>إعادة استخدام الكود</strong> (من غير تكرار)</li>
+                <li><strong>تنظيم البرنامج</strong></li>
+                <li><strong>سهولة التصحيح</strong></li>
+                <li><strong>سهولة القراءة</strong></li>
+            </ul>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-code"></i> 2. تعريف الدالة (def)</h3>
+            <div class="code-block"><code>def greet():
+    print("Hello, World!")
+
+greet()   # استدعاء الدالة</code></div>
+            <div class="info-box warning">
+                <span class="box-title">⚠️ تركة</span>
+                لو عرّفت دالة ومش استدعيتها → <strong>مش هتتنفذ</strong>.
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-sliders-h"></i> 3. البارامترات والوسائط</h3>
+            <div class="code-block"><code>def greet(name):
+    print("Hello,", name)
+
+greet("Ali")     # Hello, Ali
+greet("Sara")    # Hello, Sara</code></div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-undo"></i> 4. return — القيمة المرجعة</h3>
+            <div class="code-block"><code>def square(x):
+    return x * x
+
+r = square(5)
+print(r)                      # 25
+print(square(3) + square(4))  # 25</code></div>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>print</th><th>return</th></tr></thead>
+                    <tbody>
+                        <tr><td>بتطبع على الشاشة</td><td>بترجع قيمة للمكان اللي استدعى</td></tr>
+                        <tr><td>مفيش قيمة ترجع</td><td>فيه قيمة ترجع</td></tr>
+                        <tr><td>مش ممكن تستخدمها في حساب</td><td>ممكن تستخدمها في حساب</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="info-box warning">
+                <span class="box-title">🚨 تركة</span>
+                لو الدالة مش فيها <code>return</code> → بترجع <code>None</code> تلقائياً.
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-star"></i> 5. القيم الافتراضية</h3>
+            <div class="code-block"><code>def greet(name="صديق"):
+    print("Hello,", name)
+
+greet()            # Hello, صديق
+greet("Ahmed")     # Hello, Ahmed</code></div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-cubes"></i> 6. إرجاع أكثر من قيمة</h3>
+            <div class="code-block"><code>def min_max(nums):
+    return min(nums), max(nums)
+
+lo, hi = min_max([3, 1, 5, 2])
+print(lo)   # 1
+print(hi)   # 5</code></div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-globe"></i> 7. النطاق (Scope)</h3>
+            <div class="code-block"><code>def my_func():
+    x = 10
+    print(x)
+
+my_func()    # 10
+print(x)     # ❌ NameError — x محلي</code></div>
+            <div class="info-box info">
+                <span class="box-title">💡 معلومة</span>
+                المتغيرات جوه الدالة بتكون <strong>محلية (Local)</strong> — مش بتأثر على بره الدالة.
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3><i class="fas fa-calculator"></i> 8. مشروع: آلة حاسبة باستخدام الدوال</h3>
+            <div class="code-block"><code>def add(a, b):
+    return a + b
+
+def sub(a, b):
+    return a - b
+
+def mul(a, b):
+    return a * b
+
+def div(a, b):
+    if b != 0:
+        return a / b
+    else:
+        return "خطأ: القسمة على صفر"
+
+x = float(input("a = "))
+y = float(input("b = "))
+
+print("+ =", add(x, y))
+print("- =", sub(x, y))
+print("* =", mul(x, y))
+print("/ =", div(x, y))</code></div>
+        </div>
+
+        <div class="cheat-sheet">
+            <h3><i class="fas fa-star"></i> Cheat Sheet — المحاضرة السابعة</h3>
+            <div class="cheat-grid">
+                <div class="cheat-item"><strong>def name():</strong><span>تعريف دالة</span></div>
+                <div class="cheat-item"><strong>name()</strong><span>استدعاء دالة</span></div>
+                <div class="cheat-item"><strong>def name(p):</strong><span>دالة ببارامتر</span></div>
+                <div class="cheat-item"><strong>def name(p=val):</strong><span>قيمة افتراضية</span></div>
+                <div class="cheat-item"><strong>return value</strong><span>إرجاع قيمة</span></div>
+                <div class="cheat-item"><strong>بدون return</strong><span>بترجع None</span></div>
+                <div class="cheat-item"><strong>return a, b</strong><span>إرجاع أكثر من قيمة</span></div>
+                <div class="cheat-item"><strong>Local variable</strong><span>متغير جوه الدالة</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- أسئلة المحاضرة السابعة -->
+    <div class="questions-section">
+        <div class="questions-header">
+            <h2><i class="fas fa-question-circle"></i> 20 سؤال على المحاضرة السابعة</h2>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title"><i class="fas fa-layer-group"></i> الجزء الأول: اختيار من متعدد</div>
+
+            <div class="question"><div class="question-header"><div class="q-num">1</div><div class="q-text">ما الكلمة المستخدمة لتعريف دالة في بايثون؟</div></div>
+            <ul class="options"><li>أ) function</li><li>ب) def</li><li>ج) fun</li><li>د) define</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">2</div><div class="q-text">ما معنى Parameter؟</div></div>
+            <ul class="options"><li>أ) قيمة بترجع</li><li>ب) متغير بيستقبل قيمة</li><li>ج) كلمة مفتاحية</li><li>د) نوع بيانات</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">3</div><div class="q-text">ما الكلمة المستخدمة لإرجاع قيمة من الدالة؟</div></div>
+            <ul class="options"><li>أ) print</li><li>ب) return</li><li>ج) output</li><li>د) value</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">4</div><div class="q-text">ما ناتج: def add(a,b): return a+b; print(add(3,4))</div></div>
+            <ul class="options"><li>أ) 34</li><li>ب) 7</li><li>ج) خطأ</li><li>د) None</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">5</div><div class="q-text">ما ناتج: def greet(): print("Hello"); greet()</div></div>
+            <ul class="options"><li>أ) Hello</li><li>ب) None</li><li>ج) خطأ</li><li>د) مفيش حاجة</li></ul>
+            <div class="answer">أ</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">6</div><div class="q-text">ما ناتج: def add(a,b): print(a+b); x = add(2,3); print(x)</div></div>
+            <ul class="options"><li>أ) 5</li><li>ب) 5 ثم None</li><li>ج) None</li><li>د) خطأ</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">7</div><div class="q-text">ما ناتج: def square(x): return x*x; print(square(5))</div></div>
+            <ul class="options"><li>أ) 5</li><li>ب) 10</li><li>ج) 25</li><li>د) None</li></ul>
+            <div class="answer">ج</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">8</div><div class="q-text">ما ناتج: def greet(name="World"): print("Hello,", name); greet()</div></div>
+            <ul class="options"><li>أ) Hello,</li><li>ب) Hello, World</li><li>ج) خطأ</li><li>د) None</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">9</div><div class="q-text">ما ناتج: def greet(name="World"): print("Hello,", name); greet("Ali")</div></div>
+            <ul class="options"><li>أ) Hello, World</li><li>ب) Hello, Ali</li><li>ج) خطأ</li><li>د) None</li></ul>
+            <div class="answer">ب</div></div>
+
+            <div class="question"><div class="question-header"><div class="q-num">10</div><div class="q-text">ما ناتج: def calc(a,b): return a+b, a-b; x, y = calc(10,3); print(x, y)</div></div>
+            <ul class="options"><li>أ) 13 7</li><li>ب) 7 13</li><li>ج) 13</li><li>د) خطأ</li></ul>
+            <div class="answer">أ</div></div>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title advanced"><i class="fas fa-fire"></i> الجزء الثاني: صح أم خطأ</div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">11</div><div class="q-text">لو عرّفت دالة ومش استدعيتها، هتتنفذ تلقائياً.</div></div>
+            <div class="answer">خطأ ❌</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">12</div><div class="q-text">return بترجع قيمة، print بس بتطبع.</div></div>
+            <div class="answer">صح ✅</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">13</div><div class="q-text">ما الفرق بين Parameter و Argument؟</div></div>
+            <div class="answer">Parameter هو المتغير في تعريف الدالة، Argument هي القيمة اللي بنبعتها عند الاستدعاء</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">14</div><div class="q-text">ما ناتج: x = 5; def my_func(): x = 10; print(x); my_func(); print(x)</div></div>
+            <div class="answer">10 ثم 5 (المتغير جوه الدالة محلي)</div></div>
+
+            <div class="question essay"><div class="question-header"><div class="q-num">15</div><div class="q-text">اكتشف الخطأ: def add(a, b) return a + b</div></div>
+            <div class="answer">ناقص النقطتين <code>:</code> بعد تعريف الدالة</div></div>
+        </div>
+
+        <div class="questions-part">
+            <div class="part-title code"><i class="fas fa-code"></i> الجزء الثالث: كتابة كود</div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">16</div><div class="q-text">اكتب دالة ترجع أكبر رقم من رقمين.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">def max_of_two(a, b):
+    if a > b:
+        return a
+    else:
+        return b
+
+print(max_of_two(10, 5))   # 10</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">17</div><div class="q-text">اكتب دالة تتحقق إذا كان الرقم زوجي.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">def is_even(n):
+    return n % 2 == 0
+
+print(is_even(4))   # True
+print(is_even(5))   # False</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">18</div><div class="q-text">اكتب دالة تحسب مساحة مستطيل.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">def area(length, width):
+    return length * width
+
+print(area(5, 3))   # 15</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">19</div><div class="q-text">اكتب دالة تاخد قائمة وترجع مجموعها.</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">def total(nums):
+    s = 0
+    for n in nums:
+        s += n
+    return s
+
+print(total([1, 2, 3, 4]))   # 10</pre>
+            </div></div>
+
+            <div class="question code-q"><div class="question-header"><div class="q-num">20</div><div class="q-text">اكتب دالة تتحقق إذا كان النص متناظر (Palindrome).</div></div>
+            <div class="answer">
+<pre style="direction:ltr; text-align:left; font-family:var(--font-code);">def is_palindrome(text):
+    return text == text[::-1]
+
+print(is_palindrome("madam"))   # True
+print(is_palindrome("hello"))   # False</pre>
+            </div></div>
+        </div>
+    </div>
+
+    <!-- 🦶 الفوتر -->
+    <footer class="footer">
+        <p>📘 تم إعداد هذا الشرح وفقًا لمنهج Python Foundation - الصف الثاني الثانوي</p>
+        <p>صُنع بـ <span class="footer-heart">❤</span> لمساعدة الطلاب على الفهم</p>
+        <p>© 2026 - جميع الحقوق محفوظة | ENG : عبدالرحمن خلاف</p>
+    </footer>
+</div>
+
+<!-- الأزرار العائمة -->
+    
+
+<script>
+    window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById('progressBar').style.width = scrolled + '%';
+
+        const scrollTop = document.getElementById('scrollTop');
+        if (winScroll > 400) scrollTop.classList.add('visible');
+        else scrollTop.classList.remove('visible');
+    });
+
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('i');
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+    });
+
+    function updateThemeIcon(theme) {
+        themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+
+    document.getElementById('scrollTop').addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    document.querySelectorAll('.toc-list a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = document.querySelector(link.getAttribute('href'));
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.key === 'd') {
+            e.preventDefault();
+            themeToggle.click();
+        }
+    });
+</script>
+
+</body>
+</html>
